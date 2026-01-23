@@ -1,7 +1,16 @@
+import { Routes, Route } from "react-router"
+import { Layout } from "./layout/Layout"
+import { Home } from "./pages/Home"
 function App() {
 
   return (
-    <h1 className="text-3xl text-orange-500">APP</h1>
+
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" element={<Home />}></Route>
+      </Route>
+    </Routes>
+
   )
 }
 

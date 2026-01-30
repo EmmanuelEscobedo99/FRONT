@@ -95,7 +95,7 @@ export const LoginForm = () => {
         )}
       </div>
       <button className='btn btn-primary' type='submit'>
-        Registrarse
+        Iniciar sesión
       </button>
 
     </form>

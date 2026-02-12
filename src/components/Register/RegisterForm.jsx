@@ -1,6 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import { registerService } from '../../services/authServices'
+import { UserContext } from '../../context/UserContext'
+import { Navigate } from 'react-router'
+import toast from 'react-hot-toast'
 
 export const RegisterForm = () => {
 
@@ -13,13 +17,32 @@ export const RegisterForm = () => {
     mode: 'onChange' // Validacion en tiempo real
   })
 
+  const { userInfo, checkSession } = useContext(UserContext)
+
   const [showPassword, setShowPassword] = useState(false)
 
-  const onSubmit = (data) => {
+  const [redirect, setReditect] = useState(false)
+
+  const onSubmit = async (data) => {
     // Registrando al usuario
-    console.log(data)
-    reset()
+
+    const result = await registerService(data, reset, setReditect, checkSession)
+    if (result.message) {
+      toast.success('Registro exitoso')
+    } else {
+      toast.error('Error, intente mas tarde')
+    }
   }
+
+  if (redirect && userInfo.isAdmin) {
+    // Llevarlo a la pagina admin
+  }
+
+  if (redirect && !userInfo.isAdmin) {
+    return <Navigate to={'/'} />
+  }
+
+  console.log(userInfo)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className='className="mt-8 flex flex-col gap-4 lg:gap-6 max-w-[500px] mx-auto'>

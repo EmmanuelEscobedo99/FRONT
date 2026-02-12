@@ -1,8 +1,8 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { registerService } from '../../services/authServices'
-import { UserContext } from '../../context/UserContext'
+import { useUser } from '../../context/UserContext'
 import { Navigate } from 'react-router'
 import toast from 'react-hot-toast'
 
@@ -17,7 +17,9 @@ export const RegisterForm = () => {
     mode: 'onChange' // Validacion en tiempo real
   })
 
-  const { userInfo, checkSession } = useContext(UserContext)
+  const { userInfo, checkSession } = useUser()
+
+  //const { userInfo, checkSession } = useContext(UserContext)
 
   const [showPassword, setShowPassword] = useState(false)
 

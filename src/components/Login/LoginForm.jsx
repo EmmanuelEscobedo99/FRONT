@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import { loginService } from '../../services/authServices'
+import { Navigate } from 'react-router'
+import toast from 'react-hot-toast'
+import { useUser } from '../../context/UserContext'
 
 export const LoginForm = () => {
 
@@ -13,12 +17,27 @@ export const LoginForm = () => {
     mode: 'onChange' // Validacion en tiempo real
   })
 
+  const { setUserInfo, userInfo } = useUser()
   const [showPassword, setShowPassword] = useState(false)
+  const [redirect, setRedirect] = useState(false)
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     // Logueando al usuario
-    console.log(data)
-    reset()
+    const result = await loginService(data, reset, setRedirect, setUserInfo)
+
+    if (result.succes) {
+      toast.success(result.message)
+    } else {
+      toast.error(result.message)
+    }
+  }
+
+  if (redirect && userInfo.isAdmin) {
+    //return <Navigate to={'/admin/dashboard'}/>
+  }
+
+  if (redirect && !userInfo.isAdmin) {
+    return <Navigate to={'/'} />
   }
 
   return (

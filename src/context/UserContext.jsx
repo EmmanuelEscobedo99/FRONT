@@ -41,7 +41,8 @@ export const UserContextProvider = ({ children }) => {
       loading,
       checkSession,
       getUserId,
-      isAuthenticated
+      isAuthenticated,
+      setUserInfo
     }}>
       {children}
     </UserContext.Provider>

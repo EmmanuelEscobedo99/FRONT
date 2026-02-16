@@ -23,7 +23,7 @@ const Navbar = () => {
           }
           <Cart />
           {
-            !loading && userInfo?.usename && <UserDropDown />
+            !loading && userInfo?.username && <UserDropDown />
           }
         </div>
       </nav>

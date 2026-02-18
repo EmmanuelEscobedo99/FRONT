@@ -6,6 +6,7 @@ import { Login } from "./pages/Login"
 import { UserContextProvider } from "./context/UserContext"
 import { Toaster } from "react-hot-toast"
 import { ProductContextProvider } from "./context/ProductContext"
+import DetailProduct from "./pages/DetailProduct"
 function App() {
 
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/" element={<Home />}></Route>
             <Route path="/register" element={<Register />}></Route>
             <Route path="/login" element={<Login />}></Route>
+            <Route path="/detailProduct/:id" element={<DetailProduct />} />
           </Route>
         </Routes>
         <Toaster />

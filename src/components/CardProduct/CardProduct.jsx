@@ -18,7 +18,7 @@ const CardProduct = ({
       </figure>
       <div className="card-body">
         <h2 className="card-title">{name}</h2>
-        <div className="badge badge-warning">{price}</div>
+        <div className="badge badge-warning">${price}.00</div>
         <p>{description}</p>
         <div className="card-actions justify-between mt-4">
           <Link to={`/detailProduct/${_id}`} className="btn btn-info btn-sm md:btn-md">Ver Detalles</Link>

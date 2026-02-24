@@ -7,22 +7,25 @@ import { UserContextProvider } from "./context/UserContext"
 import { Toaster } from "react-hot-toast"
 import { ProductContextProvider } from "./context/ProductContext"
 import DetailProduct from "./pages/DetailProduct"
+import { CartContextProvider } from "./context/CartContext"
 function App() {
 
   return (
 
     <UserContextProvider>
       <ProductContextProvider>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Home />}></Route>
-            <Route path="/register" element={<Register />}></Route>
-            <Route path="/login" element={<Login />}></Route>
-            <Route path="/detailProduct/:id" element={<DetailProduct />} />
-          </Route>
-        </Routes>
-        <Toaster />
+        <CartContextProvider>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path="/" element={<Home />}></Route>
+              <Route path="/register" element={<Register />}></Route>
+              <Route path="/login" element={<Login />}></Route>
+              <Route path="/detailProduct/:id" element={<DetailProduct />} />
+            </Route>
+          </Routes>
+        </CartContextProvider>
       </ProductContextProvider>
+      <Toaster />
     </UserContextProvider>
 
   )

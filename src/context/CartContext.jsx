@@ -10,7 +10,7 @@ export const CartContextProvider = ({ children }) => {
   const [total, setTotal] = useState(0)
   const [itemsQuantity, setItemsQuantity] = useState(0)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [loading, setLoading] = useState([])
+  const [loading, setLoading] = useState(true)
   const { getuserId, isAuthenticated } = useUser()
 
   // Funcion para cargar el carrito desde localStorage
@@ -45,17 +45,17 @@ export const CartContextProvider = ({ children }) => {
         // Transformar los datos del backend al formato del frontend
         const cartItems = response.cart?.products?.map((product) => ({
           _id: product.productId._id,
-          _id: product.productId.name,
-          _id: product.productId.price,
-          _id: product.productId.imageUrl,
-          _id: product.productId.description,
-          _id: product.productId.stock,
-          _id: product.productId.quantity,
+          name: product.productId.name,
+          price: product.productId.price,
+          imageUrl: product.productId.imageUrl,
+          description: product.productId.description,
+          stock: product.productId.stock,
+          quantity: product.productId.quantity,
         }) || [])
         setCart(cartItems)
       } catch (error) {
       } finally {
-        setLoading(true)
+        setLoading(false)
       }
     } else {
       // Usuario no autenticado: cargar desde localStorage

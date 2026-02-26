@@ -11,7 +11,7 @@ export const CartContextProvider = ({ children }) => {
   const [itemsQuantity, setItemsQuantity] = useState(0)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [loading, setLoading] = useState(true)
-  const { getuserId, isAuthenticated } = useUser()
+  const { getUserId, isAuthenticated, loading: userLoading, userInfo } = useUser()
 
   // Funcion para cargar el carrito desde localStorage
   const loadLocalCart = () => {
@@ -72,7 +72,7 @@ export const CartContextProvider = ({ children }) => {
     if (localCart.length > 0 && isAuthenticated()) {
       try {
         setLoading(true)
-        const userId = getuserId()
+        const userId = getUserId()
 
         // Agregar cada producto del carrito local al backend
         for (const item of localCart) {
@@ -127,7 +127,7 @@ export const CartContextProvider = ({ children }) => {
     return () => {
       isMounted = false
     }
-  }, [])
+  }, [userLoading])
 
   // Anadir producto al carrito
   const addToCart = async (product, quantity = 1) => {
@@ -278,6 +278,35 @@ export const CartContextProvider = ({ children }) => {
       localStorage.setItem('wasAuthenticated', currentAuthState.toString())
     }
   }, [])
+
+  // Reaccionar directamene a cambios en userInfo (login/logout)
+  useEffect(() => {
+    // Esperar a que UserContext termine de verificar la sesion
+    if (userLoading) return
+
+    // Si el usuario inicio sesion (userInfo.id aparece), sincronizar o cargar
+    if (userInfo?.id) {
+      ; (async () => {
+        try {
+          const localCart = loadLocalCart()
+          if (localCart.length > 0) {
+            await syncCartWithBackend()
+          } else {
+            await loadCart()
+          }
+        } catch (error) {
+          console.error('Error al sincronizar/cargar carrito tras login: ', error)
+        }
+      })()
+    } else {
+      // Si el usuario hace logout, mostrar carrito local
+      try {
+        setCart(loadLocalCart())
+      } catch (error) {
+        console.error('Error al cargar el carrito local tras logout: ', error)
+      }
+    }
+  }, [userInfo?.id, userLoading])
 
   // Calcular total y cantidad de items cuando cambia el carrito
   useEffect(() => {

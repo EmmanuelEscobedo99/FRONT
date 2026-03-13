@@ -25,7 +25,7 @@ export const CartContextProvider = ({ children }) => {
   }
 
   // Funcion para guardar el carrito en el localStorage
-  const saveLocalCart = (cartItem) => {
+  const saveLocalCart = (cartItems) => {
     try {
       localStorage.setItem('cart', JSON.stringify(cartItems))
     } catch (error) {
@@ -50,7 +50,7 @@ export const CartContextProvider = ({ children }) => {
           imageUrl: product.productId.imageUrl,
           description: product.productId.description,
           stock: product.productId.stock,
-          quantity: product.productId.quantity,
+          quantity: product.quantity,
         }) || [])
         setCart(cartItems)
       } catch (error) {
@@ -151,7 +151,7 @@ export const CartContextProvider = ({ children }) => {
       // Usuario no autenticado: usar localstorage
       try {
         const currentCart = [...cart]
-        const existingIndex = currentCart.findIndex((itme) => item._id === product._id)
+        const existingIndex = currentCart.findIndex((item) => item._id === product._id)
 
         if (existingIndex > -1) {
           // Producto ya existe, actualizar cantidad
@@ -173,11 +173,11 @@ export const CartContextProvider = ({ children }) => {
 
   // Eliminar producto del carrito
   const removeFromCart = async (productId) => {
-    if (isAuthenticated) {
+    if (isAuthenticated()) {
       try {
         setLoading(true)
-        const userId = getuserId()
-        await removeFromCart(userId, productId)
+        const userId = getUserId()
+        await removeFromCartService(userId, productId)
 
         // Recargar el carrito despues de eliminar
         await loadCart()
@@ -208,7 +208,7 @@ export const CartContextProvider = ({ children }) => {
       return
     }
 
-    if (isAuthenticated) {
+    if (isAuthenticated()) {
       try {
         setLoading(true)
         const userId = getUserId()
@@ -240,10 +240,10 @@ export const CartContextProvider = ({ children }) => {
 
   // Limpiar el carrito
   const clearCart = async () => {
-    if (isAuthenticated) {
+    if (isAuthenticated()) {
       try {
         setLoading(true)
-        const userId = getuserId()
+        const userId = getUserId()
         await clearCartService(userId)
 
         // Limpiar el estado local

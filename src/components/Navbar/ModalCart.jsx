@@ -14,6 +14,7 @@ const ModalCart = () => {
     removeFromCart,
     clearCart,
     loading,
+    total
   } = useCart()
 
   if (!isModalOpen) return null // Solo renderizara si el modal esta abierto
@@ -72,15 +73,59 @@ const ModalCart = () => {
                             <FaPlus size={12} />
                           </button>
                         </div>
+                        {/* Precio subtotal */}
+                        <span className="font-semibold text-lg">
+                          ${item.price * item.quantity}
+                        </span>
+
+                        {/* Boton eliminar */}
+                        <button onClick={
+                          async () => {
+                            await removeFromCart(item._id)
+                          }
+                        } disabled={loading} className="btn btn-ghost btn-sm hover: bg-red-50">
+                          <CgTrash size={19} />
+                        </button>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
+
+              {/* Resumen del carrito */}
+              <div className="border-t pt-4 mt-4">
+                <div className="flex justify-between items-center mb-2">
+                  <span>Total de articulos:</span>
+                  <span className="font-semibold">
+                    {itemsQuantity}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex justify-between items-center text-lg font-bold">
+                <span>Total:</span>
+                <span>${total}</span>
+              </div>
+
+              {/* Botones de accion */}
+              <div className="modal-action mt-4 gap-3 flex flex-col lg:flex-row lg:justify-between">
+                <button onClick={async () => {
+                  if (window.confirm('Estas seguro de que quieres vaciar el carrito ?')) {
+                    await clearCart()
+                  }
+                }} disabled={loading} className="btn btn-error">
+                  Vaciar carrito
+                </button>
+                <Link className="btn btn-info" onClick={closeModal} to={"/"}>Seguir comprando</Link>
+                <Link className="btn btn-primary" to={"/checkout"}>Prodeder al pago</Link>
+              </div>
             </>
           )
         }
       </section >
+
+      {/* Click fuera para cerrar modal */}
+      <div className="modal-backdrop" onClick={closeModal}></div>
     </div>
   )
 }

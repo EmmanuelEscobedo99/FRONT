@@ -47,9 +47,12 @@ export const updateCartService = async (userId, productId, quantity) => {
 // Servicio para eliminar un producto del carrito
 export const removeFromCartService = async (userId, productId) => {
     try {
-        const response = await axios.delete(`${API_URL}/remove/${userId}`, {
-            data: { productId },
-        })
+        const response = await axios.delete(
+            `${API_URL}/removeProduct/${userId}`,
+            {
+                data: { productId },
+            },
+        )
         return response.data
     } catch (error) {
         throw new Error('Error al eliminar un producto del carrito')

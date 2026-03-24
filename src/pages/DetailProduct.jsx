@@ -1,15 +1,22 @@
 import { useEffect } from "react"
 import { useProduct } from "../context/ProductContext"
 import { useParams } from "react-router"
+import { useCart } from "../context/CartContext"
 
 const DetailProduct = () => {
 
   const { id } = useParams()
   const { getProductById, product, productLoading } = useProduct()
+  const { addToCart, openModal } = useCart()
 
   useEffect(() => {
     getProductById(id)
   }, [id, getProductById])
+
+  const handleAddToCart = async () => {
+    await addToCart(product)
+    openModal()
+  }
 
   console.log(product)
   return (
@@ -27,7 +34,7 @@ const DetailProduct = () => {
               {product.price}
             </p>
             <p className="text-lg">{product.description}</p>
-            <button className="btn btn-success mt-2 md:mt-auto md:btn-lg">Agregar al carrito</button>
+            <button onClick={handleAddToCart} className="btn btn-success mt-2 md:mt-auto md:btn-lg">Agregar al carrito</button>
           </section>
         </div>
       )}

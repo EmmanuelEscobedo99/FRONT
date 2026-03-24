@@ -8,6 +8,7 @@ import { Toaster } from "react-hot-toast"
 import { ProductContextProvider } from "./context/ProductContext"
 import DetailProduct from "./pages/DetailProduct"
 import { CartContextProvider } from "./context/CartContext"
+import AdminDashboard from "./pages/AdminDashboard"
 function App() {
 
   return (
@@ -21,6 +22,11 @@ function App() {
               <Route path="/register" element={<Register />}></Route>
               <Route path="/login" element={<Login />}></Route>
               <Route path="/detailProduct/:id" element={<DetailProduct />} />
+              <Route
+                path="/detailProduct/:id"
+                element={<DetailProduct />}
+              />
+              <Route path="/admin/dashboard/*" element={<AdminDashboard />} />
             </Route>
           </Routes>
         </CartContextProvider>

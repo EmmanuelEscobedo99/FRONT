@@ -16,7 +16,7 @@ const DetailProduct = () => {
   const handleAddToCart = async () => {
     await addToCart(product)
     openModal()
-  }
+  } //
 
   console.log(product)
   return (
